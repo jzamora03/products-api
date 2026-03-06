@@ -17,6 +17,7 @@
       <div class="header-actions">
         <button class="btn-outline" (click)="showBulkModal = true">⚡ Carga masiva</button>
         <a class="btn-primary" routerLink="/products/new">+ Nuevo</a>
+        <a class="nav-item" (click)="showCategoryModal = true" style="cursor:pointer">🏷️ Nueva categoría</a>
       </div>
     </div>
 
@@ -39,7 +40,9 @@
     </div>
 
     <div class="table-wrapper">
-      <div class="loading-overlay" *ngIf="loading"><div class="spinner-lg"></div></div>
+      <div class="loading-overlay" *ngIf="loading">
+        <div class="spinner-lg"></div>
+      </div>
       <table>
         <thead>
           <tr>
@@ -110,6 +113,24 @@
       <button class="btn-ghost" (click)="showBulkModal = false">Cancelar</button>
       <button class="btn-primary" (click)="doBulk()" [disabled]="bulkLoading || !bulkCategoryId">
         {{ bulkLoading ? 'Procesando...' : 'Insertar' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nueva Cateogira -->
+<div class="modal-backdrop" *ngIf="showCategoryModal" (click)="showCategoryModal = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>🏷️ Nueva categoría</h3>
+    <div class="modal-field">
+      <label>Nombre</label>
+      <input type="text" [(ngModel)]="newCategoryName" placeholder="SERVIDORES" />
+    </div>
+    <div class="api-error" *ngIf="categoryError">{{ categoryError }}</div>
+    <div class="modal-actions">
+      <button class="btn-ghost" (click)="showCategoryModal = false">Cancelar</button>
+      <button class="btn-primary" (click)="createCategory()" [disabled]="!newCategoryName.trim()">
+        Crear
       </button>
     </div>
   </div>

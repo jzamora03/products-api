@@ -4,7 +4,7 @@
     <nav>
       <a class="nav-item" routerLink="/products">📦 Productos</a>
       <a class="nav-item active" routerLink="/products/new">➕ Nuevo</a>
-      <a class="nav-item" (click)="showCategoryModal = true" style="cursor:pointer">🏷️ Nueva categoría</a>
+      
     </nav>
   </aside>
 
@@ -77,21 +77,6 @@
       </form>
     </div>
 
-    <div class="modal-backdrop" *ngIf="showCategoryModal" (click)="showCategoryModal = false">
-      <div class="modal" (click)="$event.stopPropagation()">
-        <h3>🏷️ Nueva categoría</h3>
-        <div class="modal-field">
-          <label>Nombre</label>
-          <input type="text" [(ngModel)]="newCategoryName" placeholder="SERVIDORES" />
-        </div>
-        <div class="api-error" *ngIf="categoryError">{{ categoryError }}</div>
-        <div class="modal-actions">
-          <button class="btn-ghost" (click)="showCategoryModal = false">Cancelar</button>
-          <button class="btn-primary" (click)="createCategory()" [disabled]="!newCategoryName.trim()">
-            Crear
-          </button>
-        </div>
-      </div>
-    </div>
+
   </main>
 </div>
