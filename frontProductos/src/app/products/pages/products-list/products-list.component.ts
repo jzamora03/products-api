@@ -30,6 +30,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   bulkLoading = false;
   bulkResult = '';
 
+  showCategoryModal = false;
+  newCategoryName = '';
+  categoryError = '';
+
+
   constructor(
     private productsSvc: ProductsService,
     private authService: AuthService,
@@ -102,6 +107,19 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.productsSvc.bulkCreate(this.bulkCount, this.bulkCategoryId).subscribe({
       next: (r) => { this.bulkResult = r.message; this.bulkLoading = false; this.load(); },
       error: (e) => { this.bulkResult = 'Error: ' + (e.error?.message || 'Falló'); this.bulkLoading = false; },
+    });
+  }
+
+  createCategory(): void {
+    if (!this.newCategoryName.trim()) return;
+    this.productsSvc.createCategory({ name: this.newCategoryName.trim() }).subscribe({
+      next: () => {
+        this.newCategoryName = '';
+        this.categoryError = '';
+        this.showCategoryModal = false;
+        this.loadCategories();
+      },
+      error: (e) => { this.categoryError = e.error?.message || 'Error al crear'; },
     });
   }
 

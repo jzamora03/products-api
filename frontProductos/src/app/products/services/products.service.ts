@@ -8,7 +8,7 @@ import { Product, PaginatedProducts, ProductFilter, CreateProductDto, Category }
 export class ProductsService {
   private api = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getProducts(f: ProductFilter = {}): Observable<PaginatedProducts> {
     let p = new HttpParams();
@@ -42,5 +42,9 @@ export class ProductsService {
     return this.http.post<{ inserted: number; message: string }>(
       `${this.api}/Product/bulk`, { count, categoryId }
     );
+  }
+
+  createCategory(data: { name: string; description?: string; picture?: string }): Observable<Category> {
+    return this.http.post<Category>(`${this.api}/Category`, data);
   }
 }
