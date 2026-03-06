@@ -6,6 +6,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { Category } from './categories/entities/category.entity';
 import { Product } from './products/entities/product.entity';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { Product } from './products/entities/product.entity';
     AuthModule,
     CategoriesModule,
     ProductsModule,
+    DatabaseModule,
   ],
 })
 export class AppModule {}
