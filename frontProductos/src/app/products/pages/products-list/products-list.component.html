@@ -1,0 +1,116 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">⬡ Products<span>API</span></div>
+    <nav>
+      <a class="nav-item active" routerLink="/products">📦 Productos</a>
+      <a class="nav-item" routerLink="/products/new">➕ Nuevo</a>
+    </nav>
+    <button class="logout-btn" (click)="logout()">⎋ Salir</button>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h2>Productos</h2>
+        <span class="count" *ngIf="paginated">{{ paginated.total | number }} registros</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-outline" (click)="showBulkModal = true">⚡ Carga masiva</button>
+        <a class="btn-primary" routerLink="/products/new">+ Nuevo</a>
+      </div>
+    </div>
+
+    <div class="filters" [formGroup]="filterForm">
+      <input formControlName="search" type="text" placeholder="🔍 Buscar..." class="filter-input" />
+      <select formControlName="categoryId" class="filter-select">
+        <option value="">Todas las categorías</option>
+        <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+      </select>
+      <select formControlName="sortBy" class="filter-select">
+        <option value="createdAt">Fecha</option>
+        <option value="name">Nombre</option>
+        <option value="unitPrice">Precio</option>
+      </select>
+      <select formControlName="sortOrder" class="filter-select">
+        <option value="DESC">↓ Desc</option>
+        <option value="ASC">↑ Asc</option>
+      </select>
+      <button class="btn-ghost" (click)="resetFilters()">✕ Limpiar</button>
+    </div>
+
+    <div class="table-wrapper">
+      <div class="loading-overlay" *ngIf="loading"><div class="spinner-lg"></div></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of products">
+            <td class="product-name">
+              <div class="thumb">{{ p.name.charAt(0) }}</div>
+              {{ p.name }}
+            </td>
+            <td><span class="badge">{{ p.category?.name || '—' }}</span></td>
+            <td class="price">${{ p.unitPrice | number:'1.2-2' }}</td>
+            <td>
+              <span [class]="p.unitsInStock < 10 ? 'stock-low' : 'stock-ok'">
+                {{ p.unitsInStock }}
+              </span>
+            </td>
+            <td>
+              <span [class]="p.discontinued ? 'tag-disc' : 'tag-active'">
+                {{ p.discontinued ? 'Descont.' : 'Activo' }}
+              </span>
+            </td>
+            <td class="actions">
+              <a [routerLink]="['/products', p.id, 'edit']" class="btn-icon">✏️</a>
+              <button (click)="delete(p)" class="btn-icon danger">🗑️</button>
+            </td>
+          </tr>
+          <tr *ngIf="!loading && products.length === 0">
+            <td colspan="6" class="empty">No hay productos</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" *ngIf="paginated && paginated.totalPages > 1">
+      <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">‹</button>
+      <span>Página {{ currentPage }} de {{ paginated.totalPages }}</span>
+      <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === paginated.totalPages">›</button>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Bulk -->
+<div class="modal-backdrop" *ngIf="showBulkModal" (click)="showBulkModal = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>⚡ Carga masiva</h3>
+    <p>Inserta productos aleatorios en batches de 1 000.</p>
+    <div class="modal-field">
+      <label>Cantidad</label>
+      <input type="number" [(ngModel)]="bulkCount" min="1" max="100000" />
+    </div>
+    <div class="modal-field">
+      <label>Categoría</label>
+      <select [(ngModel)]="bulkCategoryId">
+        <option value="">Selecciona...</option>
+        <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+    <div class="modal-result" *ngIf="bulkResult">{{ bulkResult }}</div>
+    <div class="modal-actions">
+      <button class="btn-ghost" (click)="showBulkModal = false">Cancelar</button>
+      <button class="btn-primary" (click)="doBulk()" [disabled]="bulkLoading || !bulkCategoryId">
+        {{ bulkLoading ? 'Procesando...' : 'Insertar' }}
+      </button>
+    </div>
+  </div>
+</div>
