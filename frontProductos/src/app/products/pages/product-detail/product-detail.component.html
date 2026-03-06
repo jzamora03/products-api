@@ -1,0 +1,68 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">⬡ Products<span>API</span></div>
+    <nav>
+      <a class="nav-item active" routerLink="/products">📦 Productos</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <a class="back" routerLink="/products">← Volver</a>
+      <h2>Detalle del producto</h2>
+    </div>
+
+    <div class="loading-box" *ngIf="loading"><div class="spinner-lg"></div></div>
+
+    <div class="content" *ngIf="product">
+      <div class="card-top">
+        <div class="category-photo" *ngIf="product.category?.picture">
+          <img [src]="product.category!.picture" [alt]="product.category!.name" />
+        </div>
+        <div class="category-placeholder" *ngIf="!product.category?.picture">
+          {{ product.category?.name?.charAt(0) || '?' }}
+        </div>
+        <div class="product-info">
+          <h1>{{ product.name }}</h1>
+          <span class="category-badge">{{ product.category?.name || '—' }}</span>
+          <span [class]="product.discontinued ? 'tag-disc' : 'tag-active'">
+            {{ product.discontinued ? 'Descontinuado' : 'Activo' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <span class="label">Precio unitario</span>
+          <span class="value price">${{ product.unitPrice | number:'1.2-2' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Cantidad por unidad</span>
+          <span class="value">{{ product.quantityPerUnit || '—' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Unidades en stock</span>
+          <span class="value" [class]="product.unitsInStock < 10 ? 'stock-low' : 'stock-ok'">
+            {{ product.unitsInStock }}
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Unidades en pedido</span>
+          <span class="value">{{ product.unitsOnOrder }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Nivel de reorden</span>
+          <span class="value">{{ product.reorderLevel }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Creado</span>
+          <span class="value">{{ product.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a [routerLink]="['/products', product.id, 'edit']" class="btn-primary">✏️ Editar</a>
+      </div>
+    </div>
+  </main>
+</div>

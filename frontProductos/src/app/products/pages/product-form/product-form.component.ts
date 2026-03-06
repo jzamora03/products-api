@@ -4,11 +4,13 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
 import { Category } from '../../models/product.model';
+import { ToastService } from '../../../shared/toast.service';
+import { ToastComponent } from '../../../shared/toast.component';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, ToastComponent], 
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
 })
@@ -26,6 +28,7 @@ export class ProductFormComponent implements OnInit {
     private svc: ProductsService,
     private router: Router,
     private route: ActivatedRoute,
+    private toast: ToastService,
   ) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(200)]],

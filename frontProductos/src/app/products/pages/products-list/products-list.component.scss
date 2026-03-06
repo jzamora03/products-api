@@ -55,3 +55,5 @@ tr:hover td { background: rgba(255,255,255,.02); }
 .modal-field input, .modal-field select { width: 100%; padding: .6rem .75rem; background: #0f0f13; border: 1px solid #2d2d42; border-radius: 6px; color: #fff; font-family: inherit; font-size: .9rem; box-sizing: border-box; }
 .modal-result { background: rgba(46,213,115,.1); color: #2ed573; border: 1px solid rgba(46,213,115,.3); padding: .75rem; border-radius: 6px; font-size: .85rem; margin-bottom: 1rem; }
 .modal-actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1.25rem; }
+.product-link { color: #fff; text-decoration: none; }
+.product-link:hover { color: #6c63ff; }

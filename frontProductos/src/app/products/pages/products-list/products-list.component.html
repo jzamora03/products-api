@@ -56,10 +56,15 @@
         </thead>
         <tbody>
           <tr *ngFor="let p of products">
+
             <td class="product-name">
               <div class="thumb">{{ p.name.charAt(0) }}</div>
-              {{ p.name }}
+              <a [routerLink]="['/products', p.id]" class="product-link">{{ p.name }}</a>
             </td>
+            <!-- <td class="product-name">
+              <div class="thumb">{{ p.name.charAt(0) }}</div>
+              {{ p.name }}
+            </td> -->
             <td><span class="badge">{{ p.category?.name || '—' }}</span></td>
             <td class="price">${{ p.unitPrice | number:'1.2-2' }}</td>
             <td>
@@ -135,3 +140,4 @@
     </div>
   </div>
 </div>
+<app-toast></app-toast>

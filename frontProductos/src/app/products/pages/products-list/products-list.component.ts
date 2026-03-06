@@ -6,12 +6,13 @@ import { debounceTime, distinctUntilChanged, Subject, takeUntil, skip } from 'rx
 import { ProductsService } from '../../services/products.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Product, PaginatedProducts, Category } from '../../models/product.model';
+import { ToastComponent } from '../../../shared/toast.component';
 
 
 @Component({
   selector: 'app-products-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, ToastComponent],
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss'],
 })

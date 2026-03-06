@@ -1,0 +1,32 @@
+.layout { display: flex; min-height: 100vh; background: #0f0f13; font-family: 'Courier New', monospace; }
+.sidebar { width: 220px; background: #1a1a24; border-right: 1px solid #2d2d42; display: flex; flex-direction: column; padding: 1.5rem 1rem; flex-shrink: 0; }
+.brand { color: #fff; font-size: 1.1rem; font-weight: bold; margin-bottom: 2rem; }
+.brand span { color: #6c63ff; }
+.nav-item { display: block; padding: .6rem .75rem; color: #666; text-decoration: none; border-radius: 6px; margin-bottom: .25rem; font-size: .9rem; }
+.nav-item:hover, .nav-item.active { color: #fff; background: #2d2d42; }
+.main { flex: 1; padding: 2rem; }
+.page-header { margin-bottom: 1.5rem; }
+.back { color: #6c63ff; text-decoration: none; font-size: .875rem; }
+h2 { color: #fff; margin: .25rem 0 0; font-size: 1.4rem; }
+.loading-box { display: flex; justify-content: center; padding: 4rem; }
+.spinner-lg { width: 40px; height: 40px; border: 3px solid rgba(108,99,255,.3); border-top-color: #6c63ff; border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.content { max-width: 700px; }
+.card-top { background: #1a1a24; border: 1px solid #2d2d42; border-radius: 10px; padding: 2rem; display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+.category-photo img { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; }
+.category-placeholder { width: 80px; height: 80px; border-radius: 10px; background: #2d2d42; display: flex; align-items: center; justify-content: center; color: #6c63ff; font-size: 2rem; font-weight: bold; flex-shrink: 0; }
+.product-info { display: flex; flex-direction: column; gap: .5rem; }
+h1 { color: #fff; margin: 0; font-size: 1.4rem; }
+.category-badge { background: #2d2d42; color: #ccc; padding: .2rem .6rem; border-radius: 4px; font-size: .8rem; width: fit-content; }
+.tag-active { background: rgba(46,213,115,.15); color: #2ed573; padding: .2rem .6rem; border-radius: 4px; font-size: .8rem; width: fit-content; }
+.tag-disc { background: rgba(255,71,87,.15); color: #ff4757; padding: .2rem .6rem; border-radius: 4px; font-size: .8rem; width: fit-content; }
+.details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: #1a1a24; border: 1px solid #2d2d42; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.detail-item { display: flex; flex-direction: column; gap: .3rem; }
+.label { color: #666; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+.value { color: #fff; font-size: 1rem; }
+.price { color: #6c63ff; font-weight: bold; }
+.stock-low { color: #ff4757; }
+.stock-ok { color: #2ed573; }
+.form-actions { display: flex; gap: .75rem; }
+.btn-primary { background: #6c63ff; color: #fff; border: none; padding: .65rem 1.5rem; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: .9rem; text-decoration: none; }
+.btn-primary:hover { background: #5a52d5; }

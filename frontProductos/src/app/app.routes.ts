@@ -23,6 +23,10 @@ export const routes: Routes = [
         path: ':id/edit',
         loadComponent: () => import('./products/pages/product-form/product-form.component').then((m) => m.ProductFormComponent),
       },
+      {
+        path: ':id',
+        loadComponent: () => import('./products/pages/product-detail/product-detail.component').then((m) => m.ProductDetailComponent),
+      },
     ],
   },
   { path: '**', redirectTo: '/products' },
