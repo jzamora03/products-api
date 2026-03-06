@@ -10,7 +10,7 @@ import { ToastComponent } from '../../../shared/toast.component';
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, ToastComponent], 
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, ToastComponent],
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
 })
@@ -65,8 +65,15 @@ export class ProductFormComponent implements OnInit {
       ? this.svc.updateProduct(this.productId!, this.form.value)
       : this.svc.createProduct(this.form.value);
     action.subscribe({
-      next: () => this.router.navigate(['/products']),
-      error: (e) => { this.apiError = e.error?.message || 'Error al guardar'; this.loading = false; },
+      next: () => {
+        this.toast.show(this.isEdit ? '✅ Producto actualizado correctamente' : '✅ Producto creado correctamente', 'success');
+        this.router.navigate(['/products']);
+      },
+      error: (e) => {
+        this.apiError = e.error?.message || 'Error al guardar';
+        this.toast.show('Error al guardar', 'error');
+        this.loading = false;
+      },
     });
   }
 }

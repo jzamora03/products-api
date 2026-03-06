@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { debounceTime, distinctUntilChanged, Subject, takeUntil, skip } from 'rxjs';
+import { debounceTime, Subject, takeUntil, skip } from 'rxjs';
 import { ProductsService } from '../../services/products.service';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Product, PaginatedProducts, Category } from '../../models/product.model';
 import { ToastComponent } from '../../../shared/toast.component';
+import { ToastService } from '../../../shared/toast.service';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
+    private toast: ToastService,
   ) {
     this.filterForm = this.fb.group({
       search: [''],
@@ -54,15 +56,13 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.loadCategories();
     this.load();
     this.filterForm.valueChanges.pipe(
-      skip(1),
       debounceTime(400),
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      console.log('🔄 Filtro cambió, recargando...');
-      this.currentPage = 1; this.load();
+      this.currentPage = 1;
+      this.load();
     });
   }
-
   ngOnDestroy(): void { this.destroy$.next(); this.destroy$.complete(); }
 
   load(): void {
@@ -98,16 +98,35 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   delete(product: Product): void {
     if (!confirm(`¿Eliminar "${product.name}"?`)) return;
-    this.productsSvc.deleteProduct(product.id).subscribe({ next: () => this.load() });
+    this.productsSvc.deleteProduct(product.id).subscribe({
+      next: () => {
+        this.toast.show('✅ Producto eliminado correctamente', 'success');
+        this.load();
+      },
+      error: () => this.toast.show('Error al eliminar', 'error'),
+    });
   }
+
 
   doBulk(): void {
     if (!this.bulkCategoryId) return;
     this.bulkLoading = true;
     this.bulkResult = '';
     this.productsSvc.bulkCreate(this.bulkCount, this.bulkCategoryId).subscribe({
-      next: (r) => { this.bulkResult = r.message; this.bulkLoading = false; this.load(); },
-      error: (e) => { this.bulkResult = 'Error: ' + (e.error?.message || 'Falló'); this.bulkLoading = false; },
+      next: (r) => {
+        this.bulkResult = r.message;
+        this.bulkLoading = false;
+        this.showBulkModal = false;
+        this.toast.show(`⚡ ${r.inserted} productos insertados`);
+        this.load();
+        this.cdr.detectChanges();
+      },
+      error: (e) => {
+        this.bulkResult = 'Error: ' + (e.error?.message || 'Falló');
+        this.bulkLoading = false;
+        this.toast.show('Error en carga masiva', 'error');
+        this.cdr.detectChanges();
+      },
     });
   }
 
@@ -118,9 +137,15 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         this.newCategoryName = '';
         this.categoryError = '';
         this.showCategoryModal = false;
+        this.toast.show('✅ Categoría creada exitosamente ');
         this.loadCategories();
+        this.cdr.detectChanges();
       },
-      error: (e) => { this.categoryError = e.error?.message || 'Error al crear'; },
+      error: (e) => {
+        this.categoryError = e.error?.message || 'Error al crear';
+        this.toast.show('Error al crear categoría', 'error');
+        this.cdr.detectChanges();
+      },
     });
   }
 

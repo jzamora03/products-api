@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface Toast {
@@ -11,8 +11,14 @@ export class ToastService {
   private toastSubject = new BehaviorSubject<Toast | null>(null);
   toast$ = this.toastSubject.asObservable();
 
+  constructor(private zone: NgZone) {}
+
   show(message: string, type: 'success' | 'error' = 'success') {
-    this.toastSubject.next({ message, type });
-    setTimeout(() => this.toastSubject.next(null), 3000);
+    this.zone.run(() => {
+      this.toastSubject.next({ message, type });
+      setTimeout(() => {
+        this.zone.run(() => this.toastSubject.next(null));
+      }, 3000);
+    });
   }
 }
