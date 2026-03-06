@@ -16,13 +16,19 @@ API REST de Productos y Categorías con frontend Angular.
 ## Inicio rápido
 
 ### Requisitos
-- Docker Desktop instalado
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y **corriendo**
 
 ### Ejecutar
 ```bash
 git clone https://github.com/jzamora03/products-api
 cd products-api
+
+# Windows
+copy .env.example .env
+
+# Mac/Linux
 cp .env.example .env
+
 docker-compose up --build
 ```
 
